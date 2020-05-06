@@ -15,7 +15,7 @@ var storage = multer.diskStorage({
 });
 
 const imageFileFilter = (req,file, cb) => {
-    if(!file.originalname.match(/.(jpg|jpeg|png|gif)$/)){
+    if(!file.originalname.match(/\.(jpg|jpeg|png|gif)$/)){
         return cb(new Error('You can only upload image files!'), false)
     }
     cb(null,true);
@@ -33,10 +33,10 @@ uploadRouter.route('/')
     res.end('GET operation not supported on /imageUpload');
 })
 .post(authenticate.verifyUser,
-    upload.single('imageFile'), (req, res, ) => {
+    upload.single('imageFile'), (req, res, next) => {
     res.statusCode = 200;
     res.setHeader('Content-Type', 'application/json');
-    req.json(req.file);
+    res.json(req.file);
 })
 .put(authenticate.verifyUser,(req, res, next) => {
     res.statusCode = 403;
